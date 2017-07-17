@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Humoud"]
   spec.email         = ["humoud.m.alsaleh@gmail.com"]
 
-  spec.summary       = "Makes documenting Rails API a swift and easy."
+  spec.summary       = "Makes documenting Rails APIs swift and easy."
   spec.description   = "Used to generate markdown docs for Rails API projects"
   spec.homepage      = "http://github.com"
   spec.license       = "MIT"
