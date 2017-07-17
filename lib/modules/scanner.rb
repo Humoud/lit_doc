@@ -38,4 +38,38 @@ module Scanner
 
     return lines_with_doc
   end
+
+
+  def process_lines(lines)
+    lines.each do |line|
+      args = line.split(' ')
+      case args[1]
+      when "@h:"
+        puts "this is a header"
+        process_header(args)
+      when "@b:"
+        puts "this is a body"
+        process_body(args)
+      when "@res:"
+        puts "this is a response"
+        process_response(args)
+      else
+        puts "this is regular markdown"
+      end
+    end
+  end
+
+  private
+    def process_header(args)
+      puts "args: #{args}"
+    end
+
+    def process_body(args)
+      puts "args: #{args}"
+    end
+
+    def process_response(args)
+      puts "args: #{args}"
+    end
+
 end

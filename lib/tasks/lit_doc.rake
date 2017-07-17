@@ -24,7 +24,8 @@ namespace :lit_doc do
     # get lines that contain lit doc code
     lines_with_docs = Scanner.scan_file(file_paths)
     puts "lines that contain doc syntax: #{lines_with_docs}"
-    #
+    # process lines
+    process_lines(lines_with_docs)
   end
 end
 ####################################################################
@@ -37,12 +38,12 @@ end
 #
 # above each action that the user wishes to document, he/she will use the following syntax
 # it starts with 2 ## hashtags
-## h: header text
-## route: http method route
-## body: dictionary
-## body-model: path to model
-## response: dictionary
-## response-serializer: path to serializer
-## response-model: path to model
+## @h: header text
+## @r: http method route
+## @b: dictionary
+## @b-model: path to model
+## @res: dictionary
+## @res-serializer: path to serializer
+## @res-model: path to model
 
 # RegEx used to detect if this line is to be analyzed: /^\s*##.*/
