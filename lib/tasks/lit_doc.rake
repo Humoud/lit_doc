@@ -4,6 +4,9 @@ include Scanner
 
 namespace :lit_doc do
 
+  ##########################################################################
+  ###       CREATE FILES AND FOLDERS DEPENDENCIES
+  #
   directory "doc"
   directory "doc/gen" => "doc"
   directory "doc/source" => "doc"
@@ -16,6 +19,9 @@ namespace :lit_doc do
 
   task :prepare => ["doc/source/source.md", "doc/gen/generated.md"]
 
+  ##########################################################################
+  ###  Lit Doc Rake Task
+  #
   task :generate => :prepare do
     puts "Reading list of files to scan:"
     # get files that are imported

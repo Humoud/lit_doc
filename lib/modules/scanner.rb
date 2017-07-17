@@ -22,13 +22,9 @@ module Scanner
 
     file_paths.each do |path|
       File.open("#{Rails.root}/#{path}", "r").each_line do |line|
-        ##
-        ## TODO here is where all the mojo should be
-        ## use syntax and keywords the will make generating docs easier and faster
-        ##
         # regex: lines that satisfy the following conditions:
-        # can start with a white space
-        # start with 2 ##
+        # 1. can start with a white space
+        # 2. start with 2 hashtags
         if (line[/^\s*##.*/])
           # remove trailing and leading white space and add to array
           puts lines_with_doc.push(line.strip)
@@ -39,7 +35,7 @@ module Scanner
     return lines_with_doc
   end
 
-
+  # detect lit doc code and process
   def process_lines(lines)
     lines.each do |line|
       args = line.split(' ')
