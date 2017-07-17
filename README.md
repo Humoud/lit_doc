@@ -1,8 +1,10 @@
 # Lit Doc
 **this gem hasn't been released yet**
 
-This gem makes writing docs easier by allowing you to write the docs
-inside ruby files. It also makes documentation much less of a repetitive process. That is done by using the Lit Doc code to generate the repetitive parts of the doc.
+This gem is a collection of Rake Tasks that make writing docs easier by
+allowing you to write the docs inside ruby files.
+It also makes documentation much less of a repetitive process.
+That is done by using the Lit Doc code to generate the repetitive parts of the doc.
 
 ## Installation
 
