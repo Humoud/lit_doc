@@ -1,8 +1,8 @@
 # Lit Doc
 **this gem hasn't been released yet**
 
-This gem makes documentation easier by allowing you to write the documentation code
-inside ruby files. But it also make the documentation that you write shorter. That is done by using the Lit Doc code.
+This gem makes writing docs easier by allowing you to write the docs
+inside ruby files. It also makes documentation much less of a repetitive process. That is done by using the Lit Doc code to generate the repetitive parts of the doc.
 
 ## Installation
 
