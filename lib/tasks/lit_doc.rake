@@ -10,18 +10,21 @@ namespace :lit_doc do
   file "doc/source/source.md" => ["doc/source", "doc/gen"] do
     touch "doc/source/source.md"
   end
+  file "doc/gen/generated.md" => "doc/source/source.md" do
+    touch "doc/gen/generated.md"
+  end
 
-  task :prepare => "doc/source/source.md"
+  task :prepare => ["doc/source/source.md", "doc/gen/generated.md"]
 
   task :generate => :prepare do
     puts "Reading list of files to scan:"
-    # src_files = Dir.glob("*")
-    # src_files = Dir.glob("app/controllers/*")
-    # puts "#{src_files}"
+    # get files that are imported
     file_paths = Scanner.read_source_file("doc/source/source.md")
     puts "files to be imported: #{file_paths}"
+    # get lines that contain lit doc code
     lines_with_docs = Scanner.scan_file(file_paths)
     puts "lines that contain doc syntax: #{lines_with_docs}"
+    #
   end
 end
 ####################################################################

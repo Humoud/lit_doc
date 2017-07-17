@@ -16,6 +16,7 @@ module Scanner
     return import_file_paths
   end
 
+  # go through imported files and return lines that contain lit doc code
   def scan_file(file_paths)
     lines_with_doc = []
 
@@ -28,10 +29,13 @@ module Scanner
         # regex: lines that satisfy the following conditions:
         # can start with a white space
         # start with 2 ##
-        puts lines_with_doc.push(line) if (line[/^\s*##.*/])
+        if (line[/^\s*##.*/])
+          # remove trailing and leading white space and add to array
+          puts lines_with_doc.push(line.strip)
+        end
       end
     end
-    
+
     return lines_with_doc
   end
 end
