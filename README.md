@@ -1,4 +1,4 @@
-# LitDoc
+# Lit Doc
 **this gem hasn't been released yet**
 
 This gem makes documentation easier by allowing you to write the documentation code
