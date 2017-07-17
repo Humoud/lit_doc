@@ -51,5 +51,3 @@ end
 ## @res: dictionary
 ## @res-serializer: path to serializer
 ## @res-model: path to model
-
-# RegEx used to detect if this line is to be analyzed: /^\s*##.*/

@@ -34,8 +34,17 @@ module Scanner
 
     return lines_with_doc
   end
-
-  # detect lit doc code and process
+  ##############################################################################
+  ### detect lit doc code and process it
+  ### lit code syntax:
+  ## @h: header text
+  ## @r: http method route
+  ## @b: dictionary
+  ## @b-model: path to model
+  ## @res: dictionary
+  ## @res-serializer: path to serializer
+  ## @res-model: path to model
+  ## regular markdown
   def process_lines(lines)
     lines.each do |line|
       args = line.split(' ')
