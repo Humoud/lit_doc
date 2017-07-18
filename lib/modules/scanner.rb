@@ -81,7 +81,7 @@ module Scanner
     def process_header(args, file_path)
       puts "args: #{args}"
       args = args.join ' '
-      File.open(file_path, "w") do |f|
+      File.open(file_path, "a") do |f|
         f << "#### #{args}"
       end
     end
