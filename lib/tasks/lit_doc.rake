@@ -3,7 +3,7 @@ require 'modules/scanner'
 include Scanner
 
 namespace :lit_doc do
-
+  @generated_file_path = "doc/gen/generated.md"
   ##########################################################################
   ###       CREATE FILES AND FOLDERS DEPENDENCIES
   #
@@ -13,11 +13,11 @@ namespace :lit_doc do
   file "doc/source/source.md" => ["doc/source", "doc/gen"] do
     touch "doc/source/source.md"
   end
-  file "doc/gen/generated.md" => "doc/source/source.md" do
-    touch "doc/gen/generated.md"
+  file @generated_file_path => "doc/source/source.md" do
+    touch @generated_file_path
   end
 
-  task :prepare => ["doc/source/source.md", "doc/gen/generated.md"]
+  task :prepare => ["doc/source/source.md", @generated_file_path]
 
   ##########################################################################
   ###  Lit Doc Rake Task
@@ -31,7 +31,7 @@ namespace :lit_doc do
     lines_with_docs = Scanner.scan_file(file_paths)
     puts "lines that contain doc syntax: #{lines_with_docs}"
     # process lines
-    process_lines(lines_with_docs)
+    process_lines(lines_with_docs, @generated_file_path)
   end
 end
 ####################################################################

@@ -45,36 +45,55 @@ module Scanner
   ## @res-serializer: path to serializer
   ## @res-model: path to model
   ## regular markdown
-  def process_lines(lines)
+  def process_lines(lines, generated_file_path)
     lines.each do |line|
       args = line.split(' ')
       case args[1]
       when "@h:"
         puts "this is a header"
-        process_header(args)
+        # remove first 2 entries in array
+        args.shift(2)
+        process_header(args, generated_file_path)
       when "@b:"
         puts "this is a body"
-        process_body(args)
+        # remove first 2 entries in array
+        args.shift(2)
+        process_body(args, generated_file_path)
       when "@res:"
         puts "this is a response"
-        process_response(args)
+        # remove first 2 entries in array
+        args.shift(2)
+        process_response(args, generated_file_path)
       else
         puts "this is regular markdown"
+        # remove first entry in array
+        args.shift
+        process_markdown(args, generated_file_path)
       end
     end
   end
 
   private
-    def process_header(args)
+    ############################################################################
+    #### FORMAT:
+    # TODO user passes size of headers(number of # to print) when importing
+    #
+    def process_header(args, file_path)
+      puts "args: #{args}"
+      args = args.join ' '
+      File.open(file_path, "w") do |f|
+        f << "#### #{args}"
+      end
+    end
+
+    def process_body(args, file_path)
       puts "args: #{args}"
     end
 
-    def process_body(args)
+    def process_response(args, file_path)
       puts "args: #{args}"
     end
 
-    def process_response(args)
-      puts "args: #{args}"
+    def process_markdown(args, file_path)
     end
-
 end
