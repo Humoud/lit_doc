@@ -29,7 +29,7 @@ namespace :lit_doc do
     puts "files to be imported: #{file_paths}"
     # get lines that contain lit doc code
     lines_with_docs = Scanner.scan_file(file_paths)
-    puts "lines that contain doc syntax: #{lines_with_docs}"
+    # puts "lines that contain doc syntax: #{lines_with_docs}"
     # process lines
     process_lines(lines_with_docs, @generated_file_path)
   end
