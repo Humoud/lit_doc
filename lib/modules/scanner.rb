@@ -17,11 +17,11 @@ module Scanner
   end
 
   # go through imported files and return lines that contain lit doc code
-  def scan_file(file_paths)
+  def scan_file(file_paths, root_path=Rails.root)
     lines_with_doc = []
 
     file_paths.each do |path|
-      File.open("#{Rails.root}/#{path}", "r").each_line do |line|
+      File.open("#{root_path}/#{path}", "r").each_line do |line|
         # regex: lines that satisfy the following conditions:
         # 1. can start with a white space
         # 2. start with 2 hashtags
