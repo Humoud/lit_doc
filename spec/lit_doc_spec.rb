@@ -5,13 +5,12 @@ require 'active_support/core_ext'
 include Scanner
 
 RSpec.configure do |config|
-  # config.before(:each) do
-  #   puts "before each"
-  # end
+
   config.before(:each) do
     @original_working_dir = Dir.pwd
     Dir.chdir("spec/support/rails_app")
   end
+
   config.after(:each) do
     Dir.chdir(@original_working_dir)
     puts "working dir afer: #{Dir.pwd}"
@@ -34,11 +33,11 @@ RSpec.describe LitDoc do
     expect(lines_with_docs.blank?).to eq(false)
   end
 
-end
+  it "process lines and generate doc" do
+    file_paths = Scanner.read_source_file("doc/source/source.md")
+    lines_with_docs = Scanner.scan_file(file_paths, Dir.pwd)
+    process_lines(lines_with_docs, "doc/gen/generated.md")
 
-# file_paths = Scanner.read_source_file("doc/source/source.md")
-# # get lines that contain lit doc code
-# lines_with_docs = Scanner.scan_file(file_paths)
-# # process lines
-# @generated_file_path = "doc/gen/generated.md"
-# process_lines(lines_with_docs, @generated_file_path)
+    expect(File.zero?("doc/gen/generated.md")).to eq(false)
+  end
+end
