@@ -1,0 +1,1 @@
+@import "app/controllers/application_controller.rb"
