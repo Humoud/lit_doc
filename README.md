@@ -21,6 +21,69 @@ this gem hasn't been released yet
   * `@import "app/controllers/application_controller.rb"`
 3. run `rails lit_doc:generate` to generate a doc. You can find the result in doc/gen/generate.md.
 
+## End Goal Usage Scenario
+in source.md:
+
+have a mixture of markdown syntax and "@import 'rails.root/path_to_file'" statements
+the markdown syntax will be copied as it is to the generate.md while the imported files
+will be scanned for Lit Doc code.
+
+Lit Doc code example:
+Let's say we have a controller that we want to document some actions/methods in it.
+above each action that the user wishes to document, he/she will use the following syntax:
+
+**NOTE:** Lit Doc syntax starts with 2 hashtags
+``` ruby
+## @h: header text
+## @r: http method route
+## @b-model: path to model
+## @b-serializer: path to serializer
+## @res-model: path to model
+## @res-serializer: path to serializer
+## regular markdown
+def index
+  ## do something
+end
+
+# Example:
+# in app/controllers/users_controller.rb
+class UsersController < ApplicationController
+  ## @h: User Create
+  ## @r: POST /users
+  ## @b-model: User
+  ## @res-model: User
+  ## **NOTE:** This needs optimization
+  def create
+    ## do something
+  end
+end
+
+# and in app/models/user.rb
+class User < ApplicationRecord
+  ## @b:
+  ##  {
+  ##    name: 'tim',
+  ##    email: "tim@mailz.com"
+  ##  }
+
+  ## @res:
+  ## {
+  ##   name: 'tim',
+  ##   email: "tim@mailz.com",
+  ##   updated_at: "91231-543-157",
+  ##   created_at: "123-1231-123"
+  ## }
+end
+```
+
+A brief example of the Lit Doc code/syntax:
+
+* `@h` means header.
+* `@r` means route.
+* `@b` means body and `@res` means response.
+* `@b-model` means generating body using model  and `@res-model` means generating
+* response using model.
+
 ## Development
 
 run tests with `rake spec`

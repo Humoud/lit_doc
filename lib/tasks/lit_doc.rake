@@ -34,20 +34,3 @@ namespace :lit_doc do
     process_lines(lines_with_docs, @generated_file_path)
   end
 end
-####################################################################
-# end goal usage scenario:
-# in source.md:
-#
-# have a mixture of markdown syntax and "@import 'rails.root/path_to_file'" statements
-#
-# in the imported file:
-#
-# above each action that the user wishes to document, he/she will use the following syntax
-# it starts with 2 ## hashtags
-## @h: header text
-## @r: http method route
-## @b: dictionary
-## @b-model: path to model
-## @res: dictionary
-## @res-serializer: path to serializer
-## @res-model: path to model
