@@ -10,6 +10,7 @@ RSpec.configure do |config|
 
   config.before(:all) do
     # create file in case it does not exist
+    FileUtils.makedirs('spec/support/rails_app/doc/gen/')
     FileUtils.touch('spec/support/rails_app/doc/gen/generated.md')
     # clear out file in case it exists and has content
     File.truncate('spec/support/rails_app/doc/gen/generated.md', 0)
