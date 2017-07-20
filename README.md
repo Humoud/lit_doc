@@ -1,4 +1,4 @@
-# Lit Doc
+# Lit Doc 🔥
 [![Build Status](https://travis-ci.org/Humoud/lit_doc.svg?branch=master)](https://travis-ci.org/Humoud/lit_doc)
 
 **this gem hasn't been released yet**
