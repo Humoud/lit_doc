@@ -12,11 +12,16 @@ this gem hasn't been released yet
 
 ## Usage
 
-TODO: Write usage instructions here
+1. run `rails lit_doc:prepare` generate the following:
+  1. doc/source/source.md
+  2. doc/gen/generate.md
+2. in source.md import the files that contain lit doc documentation like so:
+  * `@import "app/controllers/application_controller.rb"`
+3. run `rails lit_doc:generate` to generate a doc. You can find the result in doc/gen/generate.md.
 
 ## Development
 
-TODO: write tests
+run tests with `rake spec`
 
 
 ## Contributing
