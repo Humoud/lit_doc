@@ -1,8 +1,6 @@
 # Lit Doc 🔥
 [![Build Status](https://travis-ci.org/Humoud/lit_doc.svg?branch=master)](https://travis-ci.org/Humoud/lit_doc)
 
-**this gem hasn't been released yet**
-
 This gem is a collection of Rake Tasks that make writing docs easier by
 allowing you to write the docs inside ruby files.
 It also makes documentation much less of a repetitive process.
@@ -10,7 +8,11 @@ That is done by using the Lit Doc code to generate the repetitive parts of the d
 
 ## Installation
 
-this gem hasn't been released yet
+`gem install lit_doc --pre`
+
+or in rails gemfile
+
+`gem "lit_doc", "0.1.0.pre"`
 
 ## Usage
 
