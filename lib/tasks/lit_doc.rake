@@ -25,12 +25,12 @@ namespace :lit_doc do
   task :generate => :prepare do
     puts "Reading list of files to scan:"
     # get files that are imported
-    file_paths = Scanner.read_source_file("doc/source/source.md")
+    file_paths_and_header_sizes = Scanner.read_source_file("doc/source/source.md")
     puts "files to be imported: #{file_paths}"
     # get lines that contain lit doc code
-    lines_with_docs = Scanner.scan_file(file_paths)
+    lines_and_header_sizes = Scanner.scan_file(file_paths_and_header_sizes)
     # puts "lines that contain doc syntax: #{lines_with_docs}"
     # process lines
-    process_lines(lines_with_docs, @generated_file_path)
+    process_lines(lines_and_header_sizes, @generated_file_path)
   end
 end

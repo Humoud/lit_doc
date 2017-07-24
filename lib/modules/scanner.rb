@@ -1,27 +1,54 @@
 module Scanner
 
   # return all files to be imported/scanned(files that contain lit doc)
+  # and headers sizes for each file
+  # returns array of hashes:
+  # [ { file: "file_path", header_sizes: {h: integer} } ]
   def read_source_file(file_path)
-    import_file_paths = []
+    file_paths_and_header_sizes = []
 
     File.open(file_path, "r").each_line do |line|
       line.lstrip!
       args = line.split(' ')
       # puts "arguments in source.md: #{args}"
       if args[0] == "@import"
-        import_file_paths.push(args[1].gsub('"', ''))
+        # see if {h: 1} pattern exists
+        header_sizes = line[/{\s*h:\s*[0-9]\s*}/]
+        header_hash = Hash.new
+        # if user passed sizes
+        if header_sizes
+          # convert str to ruby hash
+          header_hash = eval header_sizes
+        # set default size
+        else
+          header_hash = {h: 2}
+        end
+        file_path = args[1][/".*"/]
+
+        hash = {file: file_path.gsub('"', ''), header_sizes: header_hash}
+        file_paths_and_header_sizes.push(hash)
       end
     end
 
-    return import_file_paths
+    return file_paths_and_header_sizes
   end
 
   # go through imported files and return lines that contain lit doc code
-  def scan_file(file_paths, root_path=Rails.root)
-    lines_with_doc = []
+  # returns an array of hashes with the following format:
+  # {
+  #   file:
+  #   {
+  #       sizes: {h: integer},
+  #       lines: ["line of lit doc code"]
+  #   }
+  # }
+  def scan_file(file_paths_and_sizes, root_path=Rails.root)
+    lines_and_header_sizes = []
 
-    file_paths.each do |path|
-      File.open("#{root_path}/#{path}", "r").each_line do |line|
+    file_paths_and_sizes.each do |path_and_size|
+      lines_with_doc = []
+      
+      File.open("#{root_path}/#{path_and_size[:file]}", "r").each_line do |line|
         # regex: lines that satisfy the following conditions:
         # 1. can start with a white space
         # 2. start with 2 hashtags
@@ -30,9 +57,19 @@ module Scanner
           lines_with_doc.push(line.strip)
         end
       end
+
+      lines_and_header_sizes.push(
+        {
+          file:
+          {
+              sizes: path_and_size[:header_sizes],
+              lines: lines_with_doc
+          }
+        }
+      )
     end
 
-    return lines_with_doc
+    return lines_and_header_sizes
   end
   ##############################################################################
   ### detect lit doc code and process it
@@ -44,30 +81,33 @@ module Scanner
   ## @res-model: path to model
   ## @res-serializer: path to serializer
   ## regular markdown
-  def process_lines(lines, generated_file_path)
-    lines.each do |line|
-      args = line.split(' ')
-      case args[1]
-      when "@h:"
-        # puts "this is a header"
-        # remove first 2 entries in array
-        args.shift(2)
-        process_header(args, generated_file_path)
-      when "@b-model:"
-        # puts "this is a body"
-        # remove first 2 entries in array
-        args.shift(2)
-        process_body_model(args, generated_file_path)
-      when "@res-model:"
-        # puts "this is a response"
-        # remove first 2 entries in array
-        args.shift(2)
-        process_response_model(args, generated_file_path)
-      else
-        # puts "this is regular markdown"
-        # remove first entry in array
-        args.shift
-        process_markdown(args, generated_file_path)
+  def process_lines(files_and_header_sizes, generated_file_path)
+    files_and_header_sizes.each do |entry|
+      entry[:file][:lines].each do |line|
+        args = line.split(' ')
+        case args[1]
+        when "@h:"
+          # puts "this is a header"
+          # remove first 2 entries in array
+          args.shift(2)
+          header_size = entry[:file][:sizes][:h]
+          process_header(args, generated_file_path, header_size)
+        when "@b-model:"
+          # puts "this is a body"
+          # remove first 2 entries in array
+          args.shift(2)
+          process_body_model(args, generated_file_path)
+        when "@res-model:"
+          # puts "this is a response"
+          # remove first 2 entries in array
+          args.shift(2)
+          process_response_model(args, generated_file_path)
+        else
+          # puts "this is regular markdown"
+          # remove first entry in array
+          args.shift
+          process_markdown(args, generated_file_path)
+        end
       end
     end
   end
@@ -77,11 +117,14 @@ module Scanner
     #### FORMAT:
     # TODO user passes size of headers(number of # to print) when importing
     #
-    def process_header(args, file_path)
+    def process_header(args, file_path, header_size)
       # puts "args: #{args}"
       args = args.join(' ')
       File.open(file_path, "a") do |f|
-        f << "#### #{args}"
+        str = " #{args}"
+        header_size.to_i.times{ str.insert(0, "#")}
+        # write to file
+        f << str
         f << "\n"
       end
     end
