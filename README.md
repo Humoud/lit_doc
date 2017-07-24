@@ -12,7 +12,7 @@ That is done by using the Lit Doc code to generate the repetitive parts of the d
 
 or in rails gemfile
 
-`gem "lit_doc", "0.1.0.pre"`
+`gem "lit_doc", "0.1.1.pre"`
 
 ## Usage
 
