@@ -49,7 +49,8 @@ end
 
 # Example:
 # in doc/source/source.md:
-@import "app/controllers/users_controller.rb"
+# where h: 2 is the number of #'s before the @h header
+@import "app/controllers/users_controller.rb", {h: 2}
 
 # in app/controllers/users_controller.rb
 class UsersController < ApplicationController
