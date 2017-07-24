@@ -48,6 +48,9 @@ def index
 end
 
 # Example:
+# in doc/source/source.md:
+@import "app/controllers/users_controller.rb"
+
 # in app/controllers/users_controller.rb
 class UsersController < ApplicationController
   ## @h: User Create
