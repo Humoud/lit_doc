@@ -85,6 +85,9 @@ module Scanner
     files_and_header_sizes.each do |entry|
       entry[:file][:lines].each do |line|
         args = line.split(' ')
+
+        File.open(generated_file_path, "a"){ |f| f << "\n" }
+
         case args[1]
         when "@h:"
           # puts "this is a header"
@@ -107,6 +110,16 @@ module Scanner
           # remove first 2 entries in array
           args.shift(2)
           process_response_model(args, generated_file_path)
+        when "@b-serializer:"
+          # puts "this is a body"
+          # remove first 2 entries in array
+          args.shift(2)
+          process_body_serializer(args, generated_file_path)
+        when "@res-serializer:"
+          # puts "this is a response"
+          # remove first 2 entries in array
+          args.shift(2)
+          process_response_serializer(args, generated_file_path)
         else
           # puts "this is regular markdown"
           # remove first entry in array
@@ -164,6 +177,30 @@ module Scanner
       end
     end
 
+    def process_body_serializer(args, file_path)
+      # puts "args: #{args}"
+      args = args.join(' ').strip
+      lines = scan_serializer_for_body(args)
+      File.open(file_path, "a") do |f|
+        lines.each do |l|
+          f << l
+          f << "\n"
+        end
+      end
+    end
+
+    def process_response_serializer(args, file_path)
+      # puts "args: #{args}"
+      args = args.join(' ').strip
+      lines = scan_serializer_for_response(args)
+      File.open(file_path, "a") do |f|
+        lines.each do |l|
+          f << l
+          f << "\n"
+        end
+      end
+    end
+
     def process_markdown(args, file_path)
       # puts "args: #{args}"
       args = args.join(' ')
@@ -181,15 +218,32 @@ module Scanner
     ## @b: body
     ## @res: response
     def scan_model_for_body(model_name)
-      return scan_model("@b:", model_name)
+      return scan_hash("@b:", "app/models/#{model_name.downcase}.rb")
     end
 
     def scan_model_for_response(model_name)
-     return scan_model("@res:", model_name)
+     return scan_hash("@res:", "app/models/#{model_name.downcase}.rb")
     end
 
-    def scan_model(switch, model_name)
-      path = "app/models/#{model_name.downcase}.rb"
+    ############################################################################
+    ####### GET RESPONSE AND BODY FROM SERIALIZER
+    ### detect lit doc code and process it
+    ### lit code syntax:
+    ## @h: header text
+    ## @b: body
+    ## @res: response
+    def scan_serializer_for_body(model_name)
+      return scan_hash("@b:", "app/serializers/#{model_name.downcase}.rb")
+    end
+
+    def scan_serializer_for_response(model_name)
+     return scan_hash("@res:", "app/serializers/#{model_name.downcase}.rb")
+    end
+
+    ############################################################################
+    ####### HELPER METHODS
+    # scans for hash and turns it to jason
+    def scan_hash(switch, path)
       scanned_docs = []
       read_doc_flag = false
       File.open(path, "r").each_line do |line|
