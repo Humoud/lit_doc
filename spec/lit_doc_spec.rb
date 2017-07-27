@@ -3,6 +3,7 @@ require 'modules/scanner'
 require 'active_support'
 require 'active_support/core_ext'
 require 'fileutils'
+require 'byebug'
 
 include Scanner
 

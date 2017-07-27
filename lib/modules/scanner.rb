@@ -199,9 +199,20 @@ module Scanner
           if args[1] == switch
             read_doc_flag = true
             scanned_docs.push("``` json")
+          # start writing json
           elsif read_doc_flag
             args.shift(1)
-            doc = args.join(' ')
+            formatted_json = []
+            args.map do |entry|
+              if /.*:/ =~ entry
+                #format
+                formatted_json.push('"'+entry[0..-2]+'"'+':')
+              else
+                # doesn't need formatting
+                formatted_json.push(entry)
+              end
+            end
+            doc = formatted_json.join(' ')
             scanned_docs.push("#{doc}")
           end
         else
