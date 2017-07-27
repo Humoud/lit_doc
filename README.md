@@ -37,7 +37,7 @@ above each action that the user wishes to document, he/she will use the followin
 **NOTE:** Lit Doc syntax starts with 2 hashtags
 ``` ruby
 ## @h: header text
-## @r: http method route
+## @r: http_method route
 ## @b-model: path to model
 ## @b-serializer: path to serializer
 ## @res-model: path to model

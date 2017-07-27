@@ -47,7 +47,7 @@ module Scanner
 
     file_paths_and_sizes.each do |path_and_size|
       lines_with_doc = []
-      
+
       File.open("#{root_path}/#{path_and_size[:file]}", "r").each_line do |line|
         # regex: lines that satisfy the following conditions:
         # 1. can start with a white space
@@ -75,7 +75,7 @@ module Scanner
   ### detect lit doc code and process it
   ### lit code syntax:
   ## @h: header text
-  ## @r: http method route
+  ## @r: http_method route
   ## @b-model: path to model
   ## @b-serializer: path to serializer
   ## @res-model: path to model
@@ -92,6 +92,11 @@ module Scanner
           args.shift(2)
           header_size = entry[:file][:sizes][:h]
           process_header(args, generated_file_path, header_size)
+        when "@r:"
+          # puts "this is a route"
+          # remove first 2 entries in array
+          args.shift(2)
+          process_route(args, generated_file_path)
         when "@b-model:"
           # puts "this is a body"
           # remove first 2 entries in array
@@ -113,10 +118,6 @@ module Scanner
   end
 
   private
-    ############################################################################
-    #### FORMAT:
-    # TODO user passes size of headers(number of # to print) when importing
-    #
     def process_header(args, file_path, header_size)
       # puts "args: #{args}"
       args = args.join(' ')
@@ -124,6 +125,16 @@ module Scanner
         str = " #{args}"
         header_size.to_i.times{ str.insert(0, "#")}
         # write to file
+        f << str
+        f << "\n"
+      end
+    end
+    # args = http_method url
+    def process_route(args, file_path)
+
+      File.open(file_path, "a") do |f|
+        # write to file
+        str = "`#{args[0].upcase} #{args[1]}`"
         f << str
         f << "\n"
       end
