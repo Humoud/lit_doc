@@ -6,14 +6,15 @@ module Scanner
   # [ { file: "file_path", header_sizes: {h: integer} } ]
   def read_source_file(file_path)
     file_paths_and_header_sizes = []
+    regular_markdown_lines = []
 
     File.open(file_path, "r").each_line do |line|
-      line.lstrip!
-      args = line.split(' ')
+      inspect_line = line.lstrip
+      args = inspect_line.split(' ')
       # puts "arguments in source.md: #{args}"
       if args[0] == "@import"
         # see if {h: 1} pattern exists
-        header_sizes = line[/{\s*h:\s*[0-9]\s*}/]
+        header_sizes = inspect_line[/{\s*h:\s*[0-9]\s*}/]
         header_hash = Hash.new
         # if user passed sizes
         if header_sizes
@@ -27,10 +28,12 @@ module Scanner
 
         hash = {file: file_path.gsub('"', ''), header_sizes: header_hash}
         file_paths_and_header_sizes.push(hash)
+      else
+        regular_markdown_lines.push(line)
       end
     end
 
-    return file_paths_and_header_sizes
+    return file_paths_and_header_sizes, regular_markdown_lines
   end
 
   # go through imported files and return lines that contain lit doc code
@@ -71,6 +74,14 @@ module Scanner
 
     return lines_and_header_sizes
   end
+
+  def process_regular_markdown_lines(lines, generated_file_path)
+    File.open(generated_file_path, "a") do |f|
+      lines.each do |line|
+        f << "#{line}"
+      end
+    end
+  end
   ##############################################################################
   ### detect lit doc code and process it
   ### lit code syntax:
@@ -81,7 +92,7 @@ module Scanner
   ## @res-model: path to model
   ## @res-serializer: path to serializer
   ## regular markdown
-  def process_lines(files_and_header_sizes, generated_file_path)
+  def process_lit_doc_lines(files_and_header_sizes, generated_file_path)
     files_and_header_sizes.each do |entry|
       entry[:file][:lines].each do |line|
         args = line.split(' ')
