@@ -23,7 +23,10 @@ or in rails gemfile
   * `@import "app/controllers/application_controller.rb"`
 3. run `rails lit_doc:generate` to generate a doc. You can find the result in doc/gen/generate.md.
 
-## End Goal Usage Scenario
+## Features to be Implemented
+- [ ] Allow specific response (res) and body (b) imports, for example @res-model-index and @b-serializer-create
+
+## Usage Example
 in source.md:
 
 have a mixture of markdown syntax and "@import 'rails.root/path_to_file'" statements
