@@ -1,6 +1,8 @@
 # should be at root of rails app for this to work
 require 'modules/scanner'
+require 'modules/processor'
 include Scanner
+include Processor
 
 namespace :lit_doc do
   @generated_file_path = "doc/gen/generated.md"
@@ -30,8 +32,8 @@ namespace :lit_doc do
     # get lines that contain lit doc code
     lines_and_header_sizes = Scanner.scan_file(file_paths_and_header_sizes)
     # process regular markdown lines
-    process_regular_markdown_lines(regular_markdown_lines, @generated_file_path)
+    Processor.process_regular_markdown_lines(regular_markdown_lines, @generated_file_path)
     # process lit doc lines
-    process_lit_doc_lines(lines_and_header_sizes, @generated_file_path)
+    Processor.process_lit_doc_lines(lines_and_header_sizes, @generated_file_path)
   end
 end

@@ -1,11 +1,13 @@
 require "spec_helper"
 require 'modules/scanner'
+require 'modules/processor'
 require 'active_support'
 require 'active_support/core_ext'
 require 'fileutils'
 require 'byebug'
 
 include Scanner
+include Processor
 
 RSpec.configure do |config|
 
@@ -50,8 +52,8 @@ RSpec.describe LitDoc do
     file_paths, regular_markdown_lines = Scanner.read_source_file("doc/source/source.md")
     lines_with_docs = Scanner.scan_file(file_paths, Dir.pwd)
 
-    process_regular_markdown_lines(regular_markdown_lines, "doc/gen/generated.md")
-    process_lit_doc_lines(lines_with_docs, "doc/gen/generated.md")
+    Processor.process_regular_markdown_lines(regular_markdown_lines, "doc/gen/generated.md")
+    Processor.process_lit_doc_lines(lines_with_docs, "doc/gen/generated.md")
 
     expect(File.zero?("doc/gen/generated.md")).to eq(false)
   end
